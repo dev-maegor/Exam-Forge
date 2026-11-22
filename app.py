@@ -6,7 +6,7 @@ import streamlit.components.v1 as components
 
 from config import API_KEY
 from modules.document_processor import extract_text
-from modules.question_generator import generate_questions
+from modules.question_generator import generate_questions, sanitize_generated_questions
 
 
 st.set_page_config(
@@ -268,15 +268,16 @@ st.markdown(
 
     .ef-brand-title {{
         font-family: "Manrope", sans-serif;
-        font-size: clamp(26px, 2.5vw, 32px);
+        font-size: clamp(34px, 3.4vw, 44px);
         font-weight: 800;
-        letter-spacing: -0.04em;
+        letter-spacing: -0.045em;
         color: var(--ef-text) !important;
         line-height: 1.25 !important;
         display: inline-flex;
         align-items: center;
-        padding: 2px 0 6px 0 !important;
+        padding: 4px 0 10px 0 !important;
         overflow: visible !important;
+        white-space: nowrap;
     }}
 
     .ef-brand-title .ef-title-accent {{
@@ -288,8 +289,8 @@ st.markdown(
         font-weight: 800;
         margin-left: 1px;
         line-height: 1.25 !important;
-        padding-bottom: 8px !important;
-        margin-bottom: -8px !important;
+        padding-bottom: 12px !important;
+        margin-bottom: -12px !important;
         overflow: visible !important;
     }}
 
@@ -604,23 +605,64 @@ st.markdown(
         color: var(--ef-text) !important;
     }}
 
-    button[kind="secondary"] {{
+    button[kind="secondary"],
+    [data-testid="stLinkButton"] a,
+    div[data-testid="stLinkButton"] a,
+    a[kind="secondary"],
+    a[data-testid^="stBaseButton"] {{
         background: var(--ef-surface) !important;
+        background-color: var(--ef-surface) !important;
         border: 1px solid var(--ef-line) !important;
         color: var(--ef-text) !important;
+        border-radius: 8px !important;
+        min-height: 38px !important;
+        text-decoration: none !important;
+        box-shadow: none !important;
+        transition: all 0.2s ease !important;
     }}
 
     button[kind="secondary"] *,
     button[kind="secondary"] p,
-    button[kind="secondary"] span {{
+    button[kind="secondary"] span,
+    [data-testid="stLinkButton"] a *,
+    [data-testid="stLinkButton"] a p,
+    [data-testid="stLinkButton"] a span,
+    a[kind="secondary"] *,
+    a[kind="secondary"] p,
+    a[kind="secondary"] span,
+    a[data-testid^="stBaseButton"] *,
+    a[data-testid^="stBaseButton"] p,
+    a[data-testid^="stBaseButton"] span {{
         color: var(--ef-text) !important;
         -webkit-text-fill-color: var(--ef-text) !important;
     }}
 
-    button[kind="secondary"]:hover {{
+    button[kind="secondary"]:hover,
+    [data-testid="stLinkButton"] a:hover,
+    div[data-testid="stLinkButton"] a:hover,
+    a[kind="secondary"]:hover,
+    a[data-testid^="stBaseButton"]:hover {{
         background: var(--ef-surface-alt) !important;
+        background-color: var(--ef-surface-alt) !important;
         border-color: var(--ef-accent) !important;
-        color: var(--ef-text) !important;
+        color: var(--ef-accent) !important;
+        text-decoration: none !important;
+    }}
+
+    button[kind="secondary"]:hover *,
+    button[kind="secondary"]:hover p,
+    button[kind="secondary"]:hover span,
+    [data-testid="stLinkButton"] a:hover *,
+    [data-testid="stLinkButton"] a:hover p,
+    [data-testid="stLinkButton"] a:hover span,
+    a[kind="secondary"]:hover *,
+    a[kind="secondary"]:hover p,
+    a[kind="secondary"]:hover span,
+    a[data-testid^="stBaseButton"]:hover *,
+    a[data-testid^="stBaseButton"]:hover p,
+    a[data-testid^="stBaseButton"]:hover span {{
+        color: var(--ef-accent) !important;
+        -webkit-text-fill-color: var(--ef-accent) !important;
     }}
 
     [data-testid="column"]:has(button[kind="secondary"]) {{
@@ -1084,7 +1126,7 @@ st.markdown(
             padding: 0.65rem 1rem !important;
             border-radius: 16px !important;
         }}
-        .ef-brand-title {{ font-size: 20px !important; }}
+        .ef-brand-title {{ font-size: 26px !important; }}
         .st-key-ef_navbar button {{
             min-height: 34px !important;
             height: 34px !important;
@@ -1104,15 +1146,13 @@ st.markdown(
 
 def show_page_intro(label, title, description):
     st.markdown(
-        f"""
-        <div class="ef-page-intro">
-            <div>
-                <div class="ef-kicker">{label}</div>
-                <h1>{title}</h1>
-                <p>{description}</p>
-            </div>
-        </div>
-        """,
+        f'<div class="ef-page-intro">'
+        f'<div>'
+        f'<div class="ef-kicker">{label}</div>'
+        f'<h1>{title}</h1>'
+        f'<p>{description}</p>'
+        f'</div>'
+        f'</div>',
         unsafe_allow_html=True,
     )
 
@@ -1483,7 +1523,9 @@ def create_exam():
 
 
 def show_generated_questions():
-    questions = st.session_state.generated["questions"]
+    questions = sanitize_generated_questions(
+        {"questions": st.session_state.generated["questions"]}
+    )["questions"]
     type_counts = st.session_state.type_counts
 
     show_page_intro(
@@ -1588,38 +1630,32 @@ def show_generated_questions():
             for name, value in breakdown.items()
         )
 
-        explanation = html.escape(str(question.get("explanation", "No explanation provided.")))
-        correct_ans = html.escape(str(question["correct_answer"]))
-        q_title = html.escape(str(question["question"]))
+        explanation = html.escape(str(question.get("explanation", "No explanation provided."))).replace("\n", "<br>")
+        correct_ans = html.escape(str(question["correct_answer"])).replace("\n", "<br>")
+        q_title = html.escape(str(question["question"])).replace("\n", "<br>")
 
-        st.markdown(
-            f"""
-            <div class="ef-question-card">
-                <div class="ef-question-header">
-                    <div class="ef-question-tags">
-                        <span class="ef-tag-index">Question {index:02d}</span>
-                        <span class="ef-tag-type">{question["type"]}</span>
-                    </div>
-                    <span class="ef-tag-quality {quality_class}">
-                        {quality["label"]} · {score}/100
-                    </span>
-                </div>
-                <div class="ef-question-title">{q_title}</div>
-                {options_html}
-                <div class="ef-solution-box">
-                    <div class="ef-solution-header">
-                        <span class="ef-solution-pill">Answer</span>
-                        <span class="ef-solution-answer">{correct_ans}</span>
-                    </div>
-                    <div class="ef-solution-explanation">{explanation}</div>
-                </div>
-                <div class="ef-metrics-grid">
-                    {breakdown_items}
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
+        card_html = (
+            f'<div class="ef-question-card">'
+            f'<div class="ef-question-header">'
+            f'<div class="ef-question-tags">'
+            f'<span class="ef-tag-index">Question {index:02d}</span>'
+            f'<span class="ef-tag-type">{question["type"]}</span>'
+            f'</div>'
+            f'<span class="ef-tag-quality {quality_class}">{quality["label"]} · {score}/100</span>'
+            f'</div>'
+            f'<div class="ef-question-title">{q_title}</div>'
+            f'{options_html}'
+            f'<div class="ef-solution-box">'
+            f'<div class="ef-solution-header">'
+            f'<span class="ef-solution-pill">Answer</span>'
+            f'<span class="ef-solution-answer">{correct_ans}</span>'
+            f'</div>'
+            f'<div class="ef-solution-explanation">{explanation}</div>'
+            f'</div>'
+            f'<div class="ef-metrics-grid">{breakdown_items}</div>'
+            f'</div>'
         )
+        st.markdown(card_html, unsafe_allow_html=True)
 
 
 def show_about():
@@ -1633,19 +1669,17 @@ def show_about():
     gh_col1, gh_col2 = st.columns([1.8, 1.2], vertical_alignment="center")
     with gh_col1:
         st.markdown(
-            """
-            <div class="ef-github-panel" style="margin: 0 !important;">
-                <div class="ef-github-left">
-                    <svg viewBox="0 0 24 24" width="34" height="34" fill="var(--ef-text)" style="flex-shrink: 0;">
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                    </svg>
-                    <div>
-                        <div class="ef-github-repo-name">Exam-Forge by @dev-maegor</div>
-                        <div class="ef-github-repo-desc">AI-powered educational assessment generator. Open-source on GitHub.</div>
-                    </div>
-                </div>
-            </div>
-            """,
+            '<div class="ef-github-panel" style="margin: 0 !important;">'
+            '<div class="ef-github-left">'
+            '<svg viewBox="0 0 24 24" width="34" height="34" fill="var(--ef-text)" style="flex-shrink: 0;">'
+            '<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>'
+            '</svg>'
+            '<div>'
+            '<div class="ef-github-repo-name">Exam-Forge by @dev-maegor</div>'
+            '<div class="ef-github-repo-desc">AI-powered educational assessment generator. Open-source on GitHub.</div>'
+            '</div>'
+            '</div>'
+            '</div>',
             unsafe_allow_html=True,
         )
     with gh_col2:
@@ -1703,7 +1737,7 @@ q_btn_label = f"Question Bank ({q_count})" if has_generated else "Question Bank"
 
 with st.container(key="ef_navbar"):
     st.markdown('<div class="ef-nav-marker" style="display:none;"></div>', unsafe_allow_html=True)
-    brand_col, nav_col, action_col = st.columns([1.35, 2.3, 0.85], vertical_alignment="center", gap="medium")
+    brand_col, nav_col, action_col = st.columns([1.6, 2.2, 0.85], vertical_alignment="center", gap="medium")
 
     with brand_col:
         st.markdown(

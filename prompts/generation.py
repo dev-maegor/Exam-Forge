@@ -24,6 +24,8 @@ IMPORTANT:
 11. Short Answer answers should be concise but sufficiently complete.
 12. Include a clear explanation for every answer.
 13. Do not invent facts that are not supported by the study material.
+14. Return plain text only in question, options, correct_answer, and explanation.
+15. Never include HTML tags, Markdown, CSS, code blocks, or markup of any kind.
 
 Return only valid JSON in this structure:
 
