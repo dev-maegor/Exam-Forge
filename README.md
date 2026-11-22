@@ -3,11 +3,34 @@
 [![Python](https://img.shields.io/badge/Python-3.14-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-App-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io/)
 [![Gemini](https://img.shields.io/badge/Google_Gemini-API-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)
+
+## 🌐 Live Prototype
+
+**[Open ExamForge · Streamlit](https://examforge.streamlit.app/)**
+
+No local setup is required to try the deployed prototype.
+
+---
+
 ## 🎓 AI-powered examination question generation
 
 **ExamForge** helps faculty members and teaching assistants turn study documents into structured assessment questions.
 
 Upload a PDF or TXT file, choose the question formats and difficulty, and generate a polished question set with answers and explanations.
+
+## ❓ What the Project Does
+
+ExamForge converts uploaded educational material into an editable question set for faculty and teaching assistants.
+
+It extracts readable text from PDF or TXT documents, sends the study material to the Gemini API, and generates:
+
+- Multiple Choice Questions
+- True/False Questions
+- Short Answer Questions
+
+Generated questions include answer choices where applicable, correct answers, explanations, difficulty information and per-question quality scores.
+
+Faculty can copy the complete question set or download it as a TXT file for use in an examination paper.
 
 ---
 
@@ -49,6 +72,12 @@ Upload a PDF or TXT file, choose the question formats and difficulty, and genera
 ---
 
 ## 🚀 Getting Started
+
+### Open the deployed prototype
+
+Visit **[https://examforge.streamlit.app/](https://examforge.streamlit.app/)**.
+
+### Run locally
 
 ### 1. Clone the repository
 
@@ -113,7 +142,9 @@ ExamForge/
 │   ├── document_processor.py
 │   └── question_generator.py
 ├── prompts/
-│   └── generation.py
+│   ├── generation_v1.py
+│   ├── generation_v2.py
+│   └── generation_v3.py
 └── README.md
 ```
 
@@ -125,6 +156,15 @@ ExamForge/
 - Teaching assistants
 - Educators
 - Academic content creators
+
+---
+
+## 👥 Team Members
+
+| Name | Student ID |
+|---|---|
+| Dishubh Singh | S24CSEU0808 |
+| Gadde Tanishq | S24CSEU0793 |
 
 ## 📝 License
 
