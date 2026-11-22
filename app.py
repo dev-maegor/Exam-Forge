@@ -17,7 +17,7 @@ st.set_page_config(
 )
 
 if "theme" not in st.session_state:
-    st.session_state.theme = "Light"
+    st.session_state.theme = "Dark"
 
 if "active_page" not in st.session_state:
     st.session_state.active_page = "Generate"

@@ -5,7 +5,7 @@ import re
 import html
 from google.genai import types
 from config import client, MODEL_NAME
-from prompts.generation import GENERATION_PROMPT_V1
+from prompts.generation_v3 import GENERATION_PROMPT_V3
 
 
 def _is_retryable_error(error):
@@ -124,7 +124,7 @@ def generate_questions(
     max_attempts=5,
 ):
 
-    prompt = GENERATION_PROMPT_V1.format(
+    prompt = GENERATION_PROMPT_V3.format(
         study_material=study_material,
         topic=topic,
         difficulty=difficulty,

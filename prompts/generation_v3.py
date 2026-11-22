@@ -1,4 +1,4 @@
-GENERATION_PROMPT_V1 = """
+GENERATION_PROMPT_V3 = """
 You are an exam question generator. Create questions strictly from the supplied study material.
 
 Study Material:
