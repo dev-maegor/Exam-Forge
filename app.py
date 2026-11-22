@@ -53,6 +53,16 @@ palette = {
         "alert_border": "rgba(186, 215, 250, 0.9)",
         "expander_bg": "rgba(255, 255, 255, 0.95)",
         "expander_border": "rgba(196, 218, 245, 0.85)",
+        "dock_bg": "rgba(226, 238, 252, 0.7)",
+        "dock_border": "rgba(196, 218, 245, 0.75)",
+        "dock_hover": "rgba(255, 255, 255, 0.65)",
+        "dock_active_bg": "#ffffff",
+        "dock_active_text": "#1d68ed",
+        "dock_active_border": "rgba(196, 218, 245, 0.95)",
+        "dock_active_shadow": "rgba(20, 50, 95, 0.08)",
+        "card_bg": "rgba(255, 255, 255, 0.88)",
+        "card_border": "rgba(196, 218, 245, 0.85)",
+        "card_shadow": "0 8px 30px -4px rgba(20, 50, 95, 0.06)",
     },
     "dark": {
         "bg": "#080e18",
@@ -80,6 +90,16 @@ palette = {
         "alert_border": "rgba(37, 62, 100, 0.9)",
         "expander_bg": "rgba(14, 24, 42, 0.95)",
         "expander_border": "rgba(37, 62, 100, 0.85)",
+        "dock_bg": "rgba(16, 28, 48, 0.8)",
+        "dock_border": "rgba(37, 62, 100, 0.85)",
+        "dock_hover": "rgba(255, 255, 255, 0.06)",
+        "dock_active_bg": "rgba(56, 189, 248, 0.16)",
+        "dock_active_text": "#38bdf8",
+        "dock_active_border": "rgba(56, 189, 248, 0.4)",
+        "dock_active_shadow": "rgba(56, 189, 248, 0.15)",
+        "card_bg": "rgba(14, 24, 42, 0.88)",
+        "card_border": "rgba(37, 62, 100, 0.85)",
+        "card_shadow": "0 8px 30px -4px rgba(0, 0, 0, 0.5)",
     },
 }[theme.lower()]
 
@@ -114,6 +134,16 @@ st.markdown(
         --ef-alert-border: {palette["alert_border"]};
         --ef-expander-bg: {palette["expander_bg"]};
         --ef-expander-border: {palette["expander_border"]};
+        --ef-dock-bg: {palette["dock_bg"]};
+        --ef-dock-border: {palette["dock_border"]};
+        --ef-dock-hover: {palette["dock_hover"]};
+        --ef-dock-active-bg: {palette["dock_active_bg"]};
+        --ef-dock-active-text: {palette["dock_active_text"]};
+        --ef-dock-active-border: {palette["dock_active_border"]};
+        --ef-dock-active-shadow: {palette["dock_active_shadow"]};
+        --ef-card-bg: {palette["card_bg"]};
+        --ef-card-border: {palette["card_border"]};
+        --ef-card-shadow: {palette["card_shadow"]};
     }}
 
     html {{
@@ -129,13 +159,25 @@ st.markdown(
         color: var(--ef-text) !important;
     }}
 
-    [data-testid="stHeader"] {{
-        height: 0;
-        background: transparent;
-    }}
-
-    [data-testid="stToolbar"] {{
-        visibility: hidden;
+    header,
+    .stAppHeader,
+    [data-testid="stHeader"],
+    .stAppToolbar,
+    [data-testid="stToolbar"],
+    [data-testid="stDecoration"],
+    div[data-testid="stElementContainer"]:has(style),
+    div.element-container:has(style) {{
+        display: none !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        max-height: 0 !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        background: transparent !important;
+        pointer-events: none !important;
     }}
 
     .block-container {{
@@ -165,159 +207,175 @@ st.markdown(
 
     /* Permanent Sticky Liquid Glass Navigation Bar */
     .st-key-ef_navbar,
-    div[data-testid="stVerticalBlockBorderWrapper"]:has(.ef-nav-marker),
-    div[data-testid="stElementContainer"]:has(.ef-nav-marker) {{
+    div[data-testid="stVerticalBlockBorderWrapper"]:has(.ef-nav-marker) {{
         position: sticky !important;
-        top: 0 !important;
+        top: 14px !important;
         z-index: 99999 !important;
         background: var(--ef-nav-glass) !important;
         backdrop-filter: blur(28px) saturate(210%) !important;
         -webkit-backdrop-filter: blur(28px) saturate(210%) !important;
-        border-bottom: 1px solid var(--ef-line) !important;
-        margin-top: 0 !important;
-        margin-left: -2rem !important;
-        margin-right: -2rem !important;
-        padding: 1.15rem 2.25rem !important;
-        box-shadow: 0 12px 36px -4px var(--ef-nav-shadow), inset 0 1.5px 1px 0 var(--ef-glass-highlight) !important;
-        transition: background 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s ease, box-shadow 0.3s ease !important;
+        border: 1px solid var(--ef-line) !important;
+        border-radius: 20px !important;
+        margin-top: 14px !important;
+        margin-bottom: 22px !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding: 0.85rem 1.75rem !important;
+        box-shadow: 0 10px 30px -5px var(--ef-nav-shadow), inset 0 1px 1px 0 var(--ef-glass-highlight) !important;
+        transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, border-radius 0.3s ease !important;
+    }}
+
+    .st-key-ef_navbar [data-testid="stVerticalBlockBorderWrapper"],
+    .st-key-ef_navbar [data-testid="stVerticalBlock"] {{
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
     }}
 
     .st-key-ef_navbar [data-testid="stHorizontalBlock"] {{
         align-items: center !important;
     }}
 
-    /* Executive Liquid Brand */
+    .st-key-ef_navbar [data-testid="stElementContainer"] {{
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        overflow: visible !important;
+    }}
+
+    .st-key-ef_navbar [data-testid="stMarkdownContainer"],
+    .st-key-ef_navbar [data-testid="stMarkdownContainer"] p {{
+        overflow: visible !important;
+    }}
+
+    /* Modern & Bigger Brand Title */
     .ef-brand-container {{
         display: inline-flex;
         align-items: center;
-        gap: 14px;
         user-select: none;
         cursor: pointer;
-        transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+        padding: 4px 0 6px 0;
+        overflow: visible !important;
+        transition: transform 0.2s ease;
     }}
 
     .ef-brand-container:hover {{
-        transform: translateY(-1px) scale(1.015);
-    }}
-
-    .ef-brand-logo {{
-        width: 44px;
-        height: 44px;
-        border-radius: 12px;
-        background: linear-gradient(135deg, var(--ef-accent) 0%, var(--ef-accent-hover) 100%);
-        color: #ffffff !important;
-        font-family: "Manrope", sans-serif;
-        font-weight: 800;
-        font-size: 18px;
-        letter-spacing: -0.04em;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 6px 18px -2px var(--ef-accent-glow), inset 0 1px 1px 0 rgba(255, 255, 255, 0.5);
-        border: 1px solid rgba(255, 255, 255, 0.25);
-    }}
-
-    .ef-brand-text {{
-        display: flex;
-        flex-direction: column;
-        line-height: 1.15;
+        transform: translateY(-1px);
     }}
 
     .ef-brand-title {{
         font-family: "Manrope", sans-serif;
-        font-size: 24px;
+        font-size: clamp(26px, 2.5vw, 32px);
         font-weight: 800;
-        color: var(--ef-text) !important;
         letter-spacing: -0.04em;
-        line-height: 1.1;
+        color: var(--ef-text) !important;
+        line-height: 1.25 !important;
+        display: inline-flex;
+        align-items: center;
+        padding: 2px 0 6px 0 !important;
+        overflow: visible !important;
     }}
 
-    .ef-brand-title span {{
+    .ef-brand-title .ef-title-accent {{
+        display: inline-block;
+        background: linear-gradient(135deg, var(--ef-accent) 0%, #0284c7 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 800;
+        margin-left: 1px;
+        line-height: 1.25 !important;
+        padding-bottom: 8px !important;
+        margin-bottom: -8px !important;
+        overflow: visible !important;
+    }}
+
+    .ef-brand-title .ef-title-dot {{
         color: var(--ef-accent) !important;
+        -webkit-text-fill-color: var(--ef-accent) !important;
+        font-size: 1.15em;
+        line-height: 1;
+        margin-left: 2px;
+        display: inline-block;
     }}
 
-    .ef-brand-subtitle {{
-        font-size: 11px;
-        font-weight: 600;
-        color: var(--ef-muted) !important;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        margin-top: 2px;
-    }}
-
-    /* Larger, Sleek Liquid Glass Nav Buttons */
-    .st-key-ef_navbar button {{
-        min-height: 46px !important;
-        height: 46px !important;
-        border-radius: 12px !important;
-        font-size: 14px !important;
-        font-weight: 600 !important;
-        letter-spacing: -0.01em !important;
-        padding: 0 18px !important;
-        transition: all 0.24s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
-        position: relative !important;
-        overflow: hidden !important;
-    }}
-
-    /* Inactive Nav Button - Liquid Glass */
-    .st-key-ef_navbar button[kind="secondary"] {{
-        background: var(--ef-surface) !important;
-        border: 1px solid var(--ef-line) !important;
-        color: var(--ef-muted) !important;
-        box-shadow: var(--ef-glass-specular) !important;
+    /* Segmented Navigation Dock in Navbar */
+    .st-key-ef_navbar [data-testid="stHorizontalBlock"] > [data-testid="stColumn"]:nth-child(2) [data-testid="stHorizontalBlock"] {{
+        background: var(--ef-dock-bg) !important;
+        border: 1px solid var(--ef-dock-border) !important;
+        border-radius: 9999px !important;
+        padding: 4px 5px !important;
+        gap: 4px !important;
+        box-shadow: inset 0 1px 2px rgba(15, 35, 75, 0.04) !important;
         backdrop-filter: blur(12px) !important;
     }}
 
-    .st-key-ef_navbar button[kind="secondary"]:hover {{
-        background: var(--ef-surface-solid) !important;
-        border-color: var(--ef-accent) !important;
-        color: var(--ef-text) !important;
-        transform: translateY(-2px) !important;
-        box-shadow: 0 8px 24px -2px var(--ef-nav-glow), inset 0 1px 1px 0 var(--ef-glass-highlight) !important;
-    }}
-
-    .st-key-ef_navbar button[kind="secondary"]:active {{
-        transform: translateY(0px) scale(0.98) !important;
-    }}
-
-    /* Active Nav Button - Luminous Sapphire */
-    .st-key-ef_navbar button[kind="primary"] {{
-        background: linear-gradient(135deg, var(--ef-accent) 0%, var(--ef-accent-hover) 100%) !important;
-        border: 1px solid rgba(255, 255, 255, 0.35) !important;
-        color: #ffffff !important;
-        box-shadow: 0 8px 26px -2px var(--ef-accent-glow), inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.45) !important;
-        transform: translateY(-1px) !important;
-    }}
-
-    .st-key-ef_navbar button[kind="primary"]:hover {{
-        background: linear-gradient(135deg, var(--ef-accent-hover) 0%, var(--ef-accent) 100%) !important;
-        border-color: rgba(255, 255, 255, 0.5) !important;
-        color: #ffffff !important;
-        transform: translateY(-2px) !important;
-        box-shadow: 0 10px 30px -2px var(--ef-accent-glow), inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.55) !important;
-    }}
-
-    .st-key-ef_navbar button[kind="primary"]:active {{
-        transform: translateY(0px) scale(0.98) !important;
-    }}
-
-    /* Theme Toggle Capsule Button */
-    .st-key-theme_toggle button {{
-        border-radius: 999px !important;
+    .st-key-ef_navbar [data-testid="stHorizontalBlock"] > [data-testid="stColumn"]:nth-child(2) button {{
+        height: 38px !important;
+        min-height: 38px !important;
+        border-radius: 9999px !important;
+        font-size: 13.5px !important;
         font-weight: 600 !important;
+        letter-spacing: -0.01em !important;
+        padding: 0 16px !important;
+        border: none !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        color: var(--ef-muted) !important;
+        transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    }}
+
+    .st-key-ef_navbar [data-testid="stHorizontalBlock"] > [data-testid="stColumn"]:nth-child(2) button[kind="secondary"]:hover {{
+        background: var(--ef-dock-hover) !important;
+        color: var(--ef-text) !important;
+        transform: none !important;
+        box-shadow: none !important;
+    }}
+
+    .st-key-ef_navbar [data-testid="stHorizontalBlock"] > [data-testid="stColumn"]:nth-child(2) button[kind="primary"] {{
+        background: var(--ef-dock-active-bg) !important;
+        color: var(--ef-dock-active-text) !important;
+        border: 1px solid var(--ef-dock-active-border) !important;
+        box-shadow: 0 3px 12px var(--ef-dock-active-shadow), inset 0 1px 1px 0 rgba(255, 255, 255, 0.8) !important;
+        font-weight: 700 !important;
+        transform: none !important;
+    }}
+
+    .st-key-ef_navbar [data-testid="stHorizontalBlock"] > [data-testid="stColumn"]:nth-child(2) button[kind="primary"] * {{
+        color: var(--ef-dock-active-text) !important;
+        -webkit-text-fill-color: var(--ef-dock-active-text) !important;
+    }}
+
+    /* Right Action Buttons (Theme toggle & GitHub) */
+    .st-key-ef_navbar [data-testid="stHorizontalBlock"] > [data-testid="stColumn"]:nth-child(3) button,
+    .st-key-ef_navbar [data-testid="stHorizontalBlock"] > [data-testid="stColumn"]:nth-child(3) a {{
+        height: 38px !important;
+        min-height: 38px !important;
+        border-radius: 9999px !important;
         font-size: 13px !important;
-        letter-spacing: 0.01em !important;
+        font-weight: 600 !important;
         background: var(--ef-surface) !important;
         border: 1px solid var(--ef-line) !important;
         color: var(--ef-text) !important;
         box-shadow: var(--ef-glass-specular) !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-decoration: none !important;
+        transition: all 0.2s ease !important;
+        padding: 0 12px !important;
     }}
 
-    .st-key-theme_toggle button:hover {{
+    .st-key-ef_navbar [data-testid="stHorizontalBlock"] > [data-testid="stColumn"]:nth-child(3) button:hover,
+    .st-key-ef_navbar [data-testid="stHorizontalBlock"] > [data-testid="stColumn"]:nth-child(3) a:hover {{
         background: var(--ef-surface-solid) !important;
         border-color: var(--ef-accent) !important;
-        transform: translateY(-2px) !important;
-        box-shadow: 0 6px 18px -2px var(--ef-nav-glow), inset 0 1px 1px 0 var(--ef-glass-highlight) !important;
+        color: var(--ef-accent) !important;
+        transform: translateY(-1px) !important;
+        box-shadow: 0 4px 14px var(--ef-nav-glow) !important;
     }}
 
     .ef-page-intro {{
@@ -731,136 +789,255 @@ st.markdown(
 
     footer {{ visibility: hidden; }}
 
-    .ef-question {{
-        padding: 24px 4px;
-        border-top: 1px solid var(--ef-line);
+    .ef-question-card {{
+        background: var(--ef-card-bg) !important;
+        border: 1px solid var(--ef-card-border) !important;
+        border-radius: 16px !important;
+        padding: 24px 28px !important;
+        margin-bottom: 22px !important;
+        box-shadow: var(--ef-card-shadow) !important;
+        backdrop-filter: blur(16px) !important;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease !important;
     }}
 
-    .ef-question:last-child {{
-        border-bottom: 1px solid var(--ef-line);
+    .ef-question-card:hover {{
+        transform: translateY(-2px) !important;
+        border-color: var(--ef-accent) !important;
+        box-shadow: 0 12px 32px -4px var(--ef-nav-glow) !important;
     }}
 
-    .ef-question-meta {{
+    .ef-question-header {{
         display: flex;
         align-items: center;
-        gap: 10px;
-        margin-bottom: 12px;
-        color: var(--ef-muted) !important;
-        font-size: 14px;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 14px;
+        flex-wrap: wrap;
+    }}
+
+    .ef-question-tags {{
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }}
+
+    .ef-tag-index {{
+        font-family: "Manrope", sans-serif;
+        font-weight: 800;
+        font-size: 12px;
+        color: var(--ef-accent) !important;
+        background: var(--ef-accent-soft);
+        padding: 4px 10px;
+        border-radius: 9999px;
+        border: 1px solid var(--ef-line);
+        letter-spacing: 0.04em;
+    }}
+
+    .ef-tag-type {{
+        font-size: 11.5px;
         font-weight: 700;
-        letter-spacing: 0.08em;
+        color: var(--ef-muted) !important;
+        background: var(--ef-surface-alt);
+        padding: 4px 10px;
+        border-radius: 9999px;
+        border: 1px solid var(--ef-line);
+        letter-spacing: 0.05em;
         text-transform: uppercase;
     }}
 
-    .ef-type {{
+    .ef-tag-quality {{
+        font-size: 12px;
+        font-weight: 700;
+        padding: 4px 12px;
+        border-radius: 9999px;
         border: 1px solid var(--ef-line);
-        border-radius: 999px;
-        padding: 4px 8px;
-        background: var(--ef-surface-alt);
-        color: var(--ef-accent) !important;
-        font-size: 11px;
-        letter-spacing: 0.06em;
+        background: var(--ef-surface);
     }}
 
-    .ef-quality {{
-        border-radius: 999px;
-        padding: 4px 8px;
-        border: 1px solid var(--ef-line);
-        background: var(--ef-surface-alt);
-        font-size: 11px;
-        letter-spacing: 0.04em;
-        text-transform: none;
+    .ef-quality-high {{
+        color: #059669 !important;
+        background: rgba(5, 150, 105, 0.08) !important;
+        border-color: rgba(5, 150, 105, 0.25) !important;
     }}
 
-    .ef-quality-ready {{
+    .ef-quality-good {{
         color: var(--ef-accent) !important;
+        background: var(--ef-accent-soft) !important;
+        border-color: rgba(29, 104, 237, 0.25) !important;
     }}
 
     .ef-quality-review {{
-        color: var(--ef-danger) !important;
+        color: #d97706 !important;
+        background: rgba(217, 119, 6, 0.08) !important;
+        border-color: rgba(217, 119, 6, 0.25) !important;
     }}
 
-    .ef-quality-score {{
-        margin-left: auto;
-        border: 1px solid var(--ef-line);
-        border-radius: 999px;
-        padding: 4px 9px;
-        background: var(--ef-surface-alt);
+    .ef-question-title {{
+        font-size: 17.5px;
+        font-weight: 600;
         color: var(--ef-text) !important;
-        font-size: 11px;
-        letter-spacing: 0.04em;
+        line-height: 1.5;
+        margin: 0 0 16px;
     }}
 
-    .ef-quality-details {{
+    /* Option choices */
+    .ef-options-list {{
+        display: grid;
+        gap: 8px;
+        margin: 14px 0 18px;
+    }}
+
+    .ef-option-item {{
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 14px;
+        border-radius: 10px;
+        background: var(--ef-surface-alt);
+        border: 1px solid var(--ef-line);
+        color: var(--ef-text);
+        font-size: 14px;
+        transition: background 0.15s ease, border-color 0.15s ease;
+    }}
+
+    .ef-option-item:hover {{
+        background: var(--ef-surface-solid);
+        border-color: var(--ef-accent);
+    }}
+
+    .ef-option-bullet {{
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--ef-surface);
+        border: 1px solid var(--ef-line);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--ef-muted);
+        flex-shrink: 0;
+    }}
+
+    /* Correct Answer Callout */
+    .ef-solution-box {{
+        background: var(--ef-accent-soft) !important;
+        border: 1px solid rgba(29, 104, 237, 0.2) !important;
+        border-radius: 12px !important;
+        padding: 14px 18px !important;
+        margin-top: 16px !important;
+    }}
+
+    .ef-solution-header {{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 6px;
+    }}
+
+    .ef-solution-pill {{
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--ef-accent) !important;
+        background: var(--ef-surface-solid);
+        padding: 2px 8px;
+        border-radius: 6px;
+        border: 1px solid rgba(29, 104, 237, 0.25);
+    }}
+
+    .ef-solution-answer {{
+        font-weight: 700;
+        font-size: 14.5px;
+        color: var(--ef-text) !important;
+    }}
+
+    .ef-solution-explanation {{
+        font-size: 13.5px;
+        color: var(--ef-muted) !important;
+        line-height: 1.5;
+        margin: 6px 0 0;
+    }}
+
+    /* Quality Metrics Grid */
+    .ef-metrics-grid {{
         display: grid;
         grid-template-columns: repeat(5, minmax(90px, 1fr));
         gap: 8px;
-        margin: 16px 0 4px;
-    }}
-
-    .ef-quality-detail {{
-        border: 1px solid var(--ef-line);
-        border-radius: 7px;
-        background: var(--ef-surface);
-        padding: 8px 9px;
-        color: var(--ef-muted) !important;
-        font-size: 11px;
-    }}
-
-    .ef-question h3 {{
-        margin: 0 0 14px;
-        font-size: 22px;
-        line-height: 1.4;
-    }}
-
-    .ef-option,
-    .ef-answer {{
-        font-size: 16px;
-    }}
-
-    .ef-options {{
-        display: grid;
-        gap: 7px;
-        margin: 12px 0 16px;
-    }}
-
-    .ef-option {{
-        max-width: 780px;
-        padding: 9px 12px;
-        border: 1px solid var(--ef-line);
-        border-radius: 7px;
-        background: var(--ef-surface);
-        color: var(--ef-text);
-        font-size: 14px;
-    }}
-
-    .ef-answer {{
-        display: grid;
-        grid-template-columns: 82px 1fr;
-        gap: 10px;
         margin-top: 14px;
-        font-size: 14px;
+        padding-top: 14px;
+        border-top: 1px solid var(--ef-line-subtle);
     }}
 
-    .ef-answer-label {{
+    .ef-metric-tile {{
+        background: var(--ef-surface);
+        border: 1px solid var(--ef-line-subtle);
+        border-radius: 8px;
+        padding: 6px 10px;
+        text-align: center;
+    }}
+
+    .ef-metric-name {{
+        font-size: 10.5px;
+        font-weight: 600;
         color: var(--ef-muted) !important;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }}
+
+    .ef-metric-val {{
+        font-size: 13px;
         font-weight: 700;
+        color: var(--ef-text) !important;
+        margin-top: 2px;
+    }}
+
+    /* GitHub Section in Overview */
+    .ef-github-panel {{
+        background: var(--ef-card-bg) !important;
+        border: 1px solid var(--ef-card-border) !important;
+        border-radius: 16px !important;
+        padding: 20px 24px !important;
+        margin: 16px 0 !important;
+        box-shadow: var(--ef-card-shadow) !important;
+    }}
+
+    .ef-github-left {{
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }}
+
+    .ef-github-repo-name {{
+        font-family: "Manrope", sans-serif;
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--ef-text) !important;
+    }}
+
+    .ef-github-repo-desc {{
+        font-size: 13px;
+        color: var(--ef-muted) !important;
+        margin-top: 2px;
     }}
 
     .ef-summary {{
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
-        margin-top: 18px;
+        margin-top: 14px;
     }}
 
     .ef-summary span {{
         border: 1px solid var(--ef-line);
-        border-radius: 7px;
+        border-radius: 9999px;
         background: var(--ef-surface);
-        padding: 7px 10px;
+        padding: 6px 12px;
         color: var(--ef-muted) !important;
-        font-size: 13px;
+        font-size: 12.5px;
+        font-weight: 600;
     }}
 
     .ef-about-grid {{
@@ -871,11 +1048,12 @@ st.markdown(
     }}
 
     .ef-about-card {{
-        min-height: 150px;
-        border: 1px solid var(--ef-line);
-        border-radius: 10px;
-        background: var(--ef-surface);
+        min-height: 140px;
+        border: 1px solid var(--ef-card-border);
+        border-radius: 14px;
+        background: var(--ef-card-bg);
         padding: 20px;
+        box-shadow: var(--ef-card-shadow);
     }}
 
     .ef-about-card h3 {{
@@ -899,23 +1077,24 @@ st.markdown(
         .st-key-ef_navbar,
         div[data-testid="stVerticalBlockBorderWrapper"]:has(.ef-nav-marker),
         div[data-testid="stElementContainer"]:has(.ef-nav-marker) {{
-            margin-left: -1rem !important;
-            margin-right: -1rem !important;
+            margin-top: 8px !important;
+            margin-bottom: 16px !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
             padding: 0.65rem 1rem !important;
+            border-radius: 16px !important;
         }}
-        .ef-brand-subtitle {{ display: none !important; }}
-        .ef-brand-logo {{ width: 36px !important; height: 36px !important; font-size: 14px !important; }}
-        .ef-brand-title {{ font-size: 19px !important; }}
+        .ef-brand-title {{ font-size: 20px !important; }}
         .st-key-ef_navbar button {{
-            min-height: 36px !important;
-            height: 36px !important;
-            font-size: 11.5px !important;
+            min-height: 34px !important;
+            height: 34px !important;
+            font-size: 11px !important;
             padding: 0 6px !important;
         }}
         .ef-page-intro {{ grid-template-columns: 1fr; }}
-        .ef-page-intro h1 {{ font-size: 34px; }}
+        .ef-page-intro h1 {{ font-size: 32px; }}
         .ef-about-grid {{ grid-template-columns: 1fr; }}
-        .ef-answer {{ grid-template-columns: 72px 1fr; }}
+        .ef-metrics-grid {{ grid-template-columns: repeat(2, 1fr); }}
     }}
     </style>
     """,
@@ -1335,16 +1514,17 @@ def show_generated_questions():
         components.html(
             f"""
             <button id="copy-all" style="
-                width:100%; height:42px; border:1px solid var(--ef-line, #dbe5e2);
-                border-radius:8px; background:transparent; color:inherit;
-                font-family:inherit; font-weight:700; cursor:pointer;">
+                width:100%; height:40px; border:1px solid var(--ef-line, #c4daf5);
+                border-radius:9999px; background:var(--ef-surface, #ffffff); color:var(--ef-text, #0d192e);
+                font-family:inherit; font-size:13.5px; font-weight:600; cursor:pointer;
+                box-shadow: 0 2px 8px rgba(15,35,75,0.04); transition:all 0.2s ease;">
                 Copy all questions
             </button>
             <script>
             document.getElementById("copy-all").addEventListener("click", async () => {{
                 await navigator.clipboard.writeText({json.dumps(text_output)});
                 const button = document.getElementById("copy-all");
-                button.textContent = "Copied";
+                button.textContent = "Copied to clipboard!";
                 setTimeout(() => button.textContent = "Copy all questions", 1600);
             }});
             </script>
@@ -1365,7 +1545,7 @@ def show_generated_questions():
         if st.button("Create another question set", use_container_width=True, on_click=start_new_exam):
             pass
 
-    st.markdown("")
+    st.markdown('<div style="height: 14px;"></div>', unsafe_allow_html=True)
 
     for index, question in enumerate(questions, start=1):
         quality = check_question_quality(
@@ -1375,50 +1555,66 @@ def show_generated_questions():
             st.session_state.difficulty,
         )
 
-        st.markdown(
-            f"""
-            <div class="ef-question">
-                <div class="ef-question-meta">
-                    <span>Question {index:02d}</span>
-                    <span class="ef-type">{question["type"]}</span>
-                    <span class="ef-quality-score">
-                        Quality {quality["score"]}/100 · {quality["label"]}
-                    </span>
-                </div>
-                <h3>{html.escape(str(question["question"]))}</h3>
-            """,
-            unsafe_allow_html=True,
-        )
+        score = quality["score"]
+        if score >= 80:
+            quality_class = "ef-quality-high"
+        elif score >= 60:
+            quality_class = "ef-quality-good"
+        else:
+            quality_class = "ef-quality-review"
 
-        if question["type"] in ("MCQ", "True/False"):
-            option_html = "".join(
-                f'<div class="ef-option">{html.escape(str(option))}</div>'
-                for option in question.get("options", [])
-            )
-            st.markdown(f'<div class="ef-options">{option_html}</div>', unsafe_allow_html=True)
+        options_html = ""
+        if question["type"] in ("MCQ", "True/False") and question.get("options"):
+            option_items = []
+            letters = ["A", "B", "C", "D", "E", "F"]
+            for opt_idx, option in enumerate(question.get("options", [])):
+                letter = letters[opt_idx] if opt_idx < len(letters) else str(opt_idx + 1)
+                opt_text = html.escape(str(option))
+                option_items.append(
+                    f'<div class="ef-option-item">'
+                    f'<span class="ef-option-bullet">{letter}</span>'
+                    f'<span>{opt_text}</span>'
+                    f'</div>'
+                )
+            options_html = f'<div class="ef-options-list">{"".join(option_items)}</div>'
 
         breakdown = quality["breakdown"]
         breakdown_items = "".join(
-            f'<div class="ef-quality-detail">'
-            f'<strong>{html.escape(name)}</strong><br>{value}/'
+            f'<div class="ef-metric-tile">'
+            f'<div class="ef-metric-name">{html.escape(name)}</div>'
+            f'<div class="ef-metric-val">{value}/'
             f'{25 if name == "Source relevance" else 20 if name in ("Completeness", "Format", "Clarity") else 15}'
-            f'</div>'
+            f'</div></div>'
             for name, value in breakdown.items()
         )
-        st.markdown(
-            f'<div class="ef-quality-details">{breakdown_items}</div>',
-            unsafe_allow_html=True,
-        )
+
+        explanation = html.escape(str(question.get("explanation", "No explanation provided.")))
+        correct_ans = html.escape(str(question["correct_answer"]))
+        q_title = html.escape(str(question["question"]))
 
         st.markdown(
             f"""
-                <div class="ef-answer">
-                    <div class="ef-answer-label">Answer</div>
-                    <div>{html.escape(str(question["correct_answer"]))}</div>
+            <div class="ef-question-card">
+                <div class="ef-question-header">
+                    <div class="ef-question-tags">
+                        <span class="ef-tag-index">Question {index:02d}</span>
+                        <span class="ef-tag-type">{question["type"]}</span>
+                    </div>
+                    <span class="ef-tag-quality {quality_class}">
+                        {quality["label"]} · {score}/100
+                    </span>
                 </div>
-                <div class="ef-answer">
-                    <div class="ef-answer-label">Explanation</div>
-                    <div>{html.escape(str(question.get("explanation", "No explanation provided.")))}</div>
+                <div class="ef-question-title">{q_title}</div>
+                {options_html}
+                <div class="ef-solution-box">
+                    <div class="ef-solution-header">
+                        <span class="ef-solution-pill">Answer</span>
+                        <span class="ef-solution-answer">{correct_ans}</span>
+                    </div>
+                    <div class="ef-solution-explanation">{explanation}</div>
+                </div>
+                <div class="ef-metrics-grid">
+                    {breakdown_items}
                 </div>
             </div>
             """,
@@ -1429,32 +1625,59 @@ def show_generated_questions():
 def show_about():
     show_page_intro(
         "ABOUT EXAMFORGE",
-        "Built for faculty",
-        "ExamForge helps faculty members and teaching assistants create focused question sets from educational material.",
+        "Assessment Engine",
+        "ExamForge helps educators, faculty members and students generate rigorous, structured question sets from course material.",
     )
 
+    st.markdown('<div class="ef-section-heading">Developer & Open Source</div>', unsafe_allow_html=True)
+    gh_col1, gh_col2 = st.columns([1.8, 1.2], vertical_alignment="center")
+    with gh_col1:
+        st.markdown(
+            """
+            <div class="ef-github-panel" style="margin: 0 !important;">
+                <div class="ef-github-left">
+                    <svg viewBox="0 0 24 24" width="34" height="34" fill="var(--ef-text)" style="flex-shrink: 0;">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    <div>
+                        <div class="ef-github-repo-name">Exam-Forge by @dev-maegor</div>
+                        <div class="ef-github-repo-desc">AI-powered educational assessment generator. Open-source on GitHub.</div>
+                    </div>
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+    with gh_col2:
+        btn_c1, btn_c2 = st.columns(2)
+        with btn_c1:
+            st.link_button("Repository", "https://github.com/dev-maegor/Exam-Forge", use_container_width=True)
+        with btn_c2:
+            st.link_button("GitHub Profile", "https://github.com/dev-maegor", use_container_width=True)
+
+    st.markdown('<div style="height: 16px;"></div>', unsafe_allow_html=True)
     st.markdown('<div class="ef-section-heading">How it works</div>', unsafe_allow_html=True)
     workflow = [
-        ("01", "Upload study material", "Use a PDF or TXT document as the source."),
-        ("02", "Configure requirements", "Choose a topic, difficulty and question format counts."),
-        ("03", "Generate with Gemini", "Create questions, answers and explanations from the source."),
-        ("04", "Review the question set", "Copy or download the questions for your examination paper."),
+        ("01", "Upload study material", "Use a PDF or TXT document as the authoritative source."),
+        ("02", "Configure requirements", "Choose a topic, difficulty level and format breakdown."),
+        ("03", "Generate with Gemini", "Synthesize balanced questions with validated correct answers and reasoning."),
+        ("04", "Review & Export", "Inspect quality metrics, copy or download the question set for your assessment."),
     ]
 
     for number, title, description in workflow:
         col1, col2 = st.columns([0.12, 1.88])
         with col1:
-            st.markdown(f"<h3 style='color:var(--ef-accent)'>{number}</h3>", unsafe_allow_html=True)
+            st.markdown(f"<h3 style='color:var(--ef-accent); margin:0;'>{number}</h3>", unsafe_allow_html=True)
         with col2:
             st.markdown(f"**{title}**")
             st.write(description)
 
     st.markdown('<div class="ef-section-heading">Supported formats</div>', unsafe_allow_html=True)
     supported = [
-        ("Multiple Choice", "Four distinct options with one correct answer."),
-        ("True / False", "A clear statement with one two-part answer."),
-        ("Short Answer", "A concise written response with an explanation."),
-        ("Technology", "Python, Streamlit, Gemini API and PyMuPDF."),
+        ("Multiple Choice", "Four distinct options with one unambiguously correct answer."),
+        ("True / False", "A clear conceptual statement with boolean verification."),
+        ("Short Answer", "Concise written questions paired with full model answers."),
+        ("Technology Stack", "Python, Streamlit, Google Gemini API and PyMuPDF."),
     ]
     for title, description in supported:
         col1, col2 = st.columns([0.3, 1.7])
@@ -1462,11 +1685,6 @@ def show_about():
             st.markdown(f"**{title}**")
         with col2:
             st.write(description)
-
-    st.caption(
-        "ExamForge is an academic prototype. Generated questions should be reviewed "
-        "before use in formal assessment."
-    )
 
 
 def set_active_page(page_name):
@@ -1485,16 +1703,12 @@ q_btn_label = f"Question Bank ({q_count})" if has_generated else "Question Bank"
 
 with st.container(key="ef_navbar"):
     st.markdown('<div class="ef-nav-marker" style="display:none;"></div>', unsafe_allow_html=True)
-    brand_col, nav_col, theme_col = st.columns([1.3, 2.7, 0.7], vertical_alignment="center", gap="medium")
+    brand_col, nav_col, action_col = st.columns([1.35, 2.3, 0.85], vertical_alignment="center", gap="medium")
 
     with brand_col:
         st.markdown(
             '<div class="ef-brand-container">'
-            '<div class="ef-brand-logo">EF</div>'
-            '<div class="ef-brand-text">'
-            '<div class="ef-brand-title">Exam<span>Forge</span></div>'
-            '<div class="ef-brand-subtitle">Assessment Architecture</div>'
-            '</div>'
+            '<div class="ef-brand-title">Exam<span class="ef-title-accent">Forge</span><span class="ef-title-dot">.</span></div>'
             '</div>',
             unsafe_allow_html=True,
         )
@@ -1530,26 +1744,35 @@ with st.container(key="ef_navbar"):
                 args=("About",),
             )
 
-    with theme_col:
-        if st.session_state.theme == "Light":
-            st.button(
-                "Dark Mode",
-                key="theme_toggle",
-                type="secondary",
-                help="Switch to dark theme",
+    with action_col:
+        act1, act2 = st.columns([1, 1], gap="small")
+        with act1:
+            if st.session_state.theme == "Light":
+                st.button(
+                    "Dark",
+                    key="theme_toggle",
+                    type="secondary",
+                    help="Switch to dark theme",
+                    use_container_width=True,
+                    on_click=set_theme,
+                    args=("Dark",),
+                )
+            else:
+                st.button(
+                    "Light",
+                    key="theme_toggle",
+                    type="secondary",
+                    help="Switch to light theme",
+                    use_container_width=True,
+                    on_click=set_theme,
+                    args=("Light",),
+                )
+        with act2:
+            st.link_button(
+                "GitHub",
+                "https://github.com/dev-maegor/Exam-Forge",
                 use_container_width=True,
-                on_click=set_theme,
-                args=("Dark",),
-            )
-        else:
-            st.button(
-                "Light Mode",
-                key="theme_toggle",
-                type="secondary",
-                help="Switch to light theme",
-                use_container_width=True,
-                on_click=set_theme,
-                args=("Light",),
+                help="View source code on GitHub",
             )
 
 st.markdown('<div style="height:14px"></div>', unsafe_allow_html=True)
