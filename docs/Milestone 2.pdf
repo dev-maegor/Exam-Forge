@@ -1,0 +1,37 @@
+Milestone 2 – Project Report
+Project Title: Exam Question Generator with Automated Quality Check
+Team Name: Zero Shot
+Team ID: PE-B01-08
+1. Project Overview
+ExamForge is an AI-powered application that generates examination questions from uploaded study materials. It uses the Google Gemini API to generate questions based on the selected topic, difficulty level, and requested question types.
+2. Technologies Used
+•	Python
+•	Streamlit
+•	Google Gemini API
+•	PyMuPDF
+•	GitHub
+•	Streamlit Community Cloud
+3. Working Modules
+1.	Document upload and text extraction (PDF and TXT).
+2.	Input configuration for topic and difficulty.
+3.	Prompt construction and refinement.
+4.	AI-based question generation using Gemini.
+5.	MCQ, True/False, and Short Answer generation.
+6.	Mixed question-type generation.
+7.	Automated rule-based question quality evaluation.
+8.	Generated question display.
+9.	Copy and download functionality.
+4. Automated Quality Evaluation
+The application evaluates generated questions using rule-based checks for:
+•	Completeness
+•	Format correctness
+•	Source relevance
+•	Clarity
+•	Specificity
+Each question receives a quality score out of 100.
+5. Prototype
+The application has been deployed using Streamlit Community Cloud.
+Live Prototype: https://examforge.streamlit.app/
+6. Conclusion
+The project has progressed from its initial proposal into a working application that combines prompt engineering, AI-based question generation, document processing, and automated question quality assessment.
+
