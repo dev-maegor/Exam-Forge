@@ -9,6 +9,8 @@
 **[Open ExamForge · Streamlit](https://examforge.streamlit.app/)**
 
 No local setup is required to try the deployed prototype.
+Please wait for the app to rebuild if it has gone in sleep mode.
+It might take a minute or two.
 
 ---
 
